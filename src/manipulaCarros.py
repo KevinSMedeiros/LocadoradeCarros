@@ -26,8 +26,7 @@ def cadastrar( listaCarros : list) -> bool :
     -------
     Retorna True se o carro foi cadastrado com sucesso
     '''
-    camposCarros =  ["Identificacao","Modelo","Cor","AnoFabricacao","Placa","Cambio","Categoria", "Km", "Diaria", "Seguro", "Disponivel"]
-    cliente = apresentacao.CadastrarCarro()
-    listaCarros.append(cliente)
+    carro = apresentacao.CadastrarCarro()
+    listaCarros.append(carro)
     print(listaCarros)
-    return mcsv.gravarDados('LocadoradeCarros/Carro.csv', camposCarros, listaCarros )
+    return mcsv.gravarDados('LocadoradeCarros/Carro.csv', carro.keys(), listaCarros )

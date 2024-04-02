@@ -43,7 +43,7 @@ def CadastrarCliente() -> dict :
     '''
     print("#"*30)
     print("Cadastramento de um novo cliente ")
-    l = ["CPF","Nome","Nascimento","Idade","Endereço","Cidade","Estado"]
+    l = ["CPF","Nome","Nascimento","Idade","Endereco","Cidade","Estado"]
     cliente = {}
     for campo in l:
         cliente[campo] = input(f"{campo}:")
@@ -64,6 +64,10 @@ def CadastrarCarro() -> dict:
     print("Cadastramento de um novo carro ")
     l = ["Identificacao","Modelo","Cor","AnoFabricacao","Placa","Cambio","Categoria", "Km", "Diaria", "Seguro", "Disponivel"]
     carro = {}
+    Modelo_opcoes = ["Kwid","Polo","Renegade","T-Cross","Corola","Hillux"]
+    Cor_opcoes = ["preto","cinza"]
+    Cambio_opcoes = ["manual","automático"]
+    Categoria_opcoes = ["Economico","Intermediario","Conforto","Pickup"]
     for campo in l:
         carro[campo] = input(f"{campo}:")
         print("#"*30)

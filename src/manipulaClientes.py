@@ -1,5 +1,5 @@
 import manipulaCSV as mcsv
-
+import apresentacao
 
 def carregar() ->list: 
     '''
@@ -26,13 +26,9 @@ def cadastrar( listaClientes : list ) -> bool :
     -------
     Retorna True se o cliente foi cadastrado com sucesso
     '''
-    camposCliente = ["CPF","Nome","Nascimento","Idade","Endereco","Cidade","Estado"]
-    cliente = {}
-    for i in camposCliente:
-        cliente[i] = input(f"{i}:")
+    cliente = apresentacao.CadastrarCliente()
     listaClientes.append(cliente)
-    print(listaClientes)
-    return mcsv.gravarDados('LocadoradeCarros/Cliente.csv', camposCliente, listaClientes )
+    return mcsv.gravarDados('LocadoradeCarros/Cliente.csv', cliente.keys(), listaClientes )
 
 def excluir(listaClientes : list, cpf : str ) -> bool:
     '''

@@ -12,7 +12,17 @@ def carregar() -> list :
     '''
     lista = mcsv.carregarDados("LocadoradeCarros/Carro.csv")
     return lista
-
+def carrergarCarrosDisponiveis() -> list:
+    '''
+    Carrega o arquivo de Carro.csv numa lista
+    Retorna uma lista de carros disponíveis
+    '''
+    listaCarros = carregar()
+    listaCarrosDisponiveis = []
+    for carro in listaCarros:
+        if carro['Disponivel'] == 'True':
+            listaCarrosDisponiveis.append(carro)
+    return listaCarrosDisponiveis
 
 def cadastrar( listaCarros : list) -> bool :
     '''

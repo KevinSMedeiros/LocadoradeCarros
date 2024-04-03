@@ -41,12 +41,11 @@ def MenuClientes() -> int :
     Retorna válida escolhida
 
     '''
-    opcoes = [1,2,3,9]
+    opcoes = [1,2,3,4,9]
     opcao = 10
     while opcao not in opcoes:
-        limpaTela()
         print("#"*20)
-        print("1.Cadastrar Cliente\n2.Excluir Cliente\n3.Listar Clientes\n9.Sair")    
+        print("1.Cadastrar Cliente\n2.Excluir Cliente\n3.Listar Clientes\n4.Alterar informações\n9.Sair")    
         print('#'*20)
         opcao = int(input("Opção -> "))            
     return opcao
@@ -125,3 +124,12 @@ def CadastrarCarro() -> dict:
             carro[campo] = input(f"{campo}:")
         print("#"*30)
     return carro   
+def listar(lista : list):
+    '''
+    Lista os elementos da lista
+    '''
+    for i in lista:
+        print("#"*30)
+        for campo in i.keys():
+            print(campo, ":", i[campo])
+        

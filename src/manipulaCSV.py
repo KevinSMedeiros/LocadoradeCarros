@@ -25,7 +25,7 @@ def carregarDados( nomeArquivo: str) -> list :
 
 ########################################################
 
-def gravarDados( nomeArquivo: str, campos : list, lista : list ) -> bool :
+def  gravarDados( nomeArquivo: str, campos : list, lista : list ) -> bool :
     '''Grava a informação da lista em um arquivo CSV
     
     Parâmetros

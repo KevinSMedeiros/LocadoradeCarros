@@ -5,9 +5,17 @@ import apresentacao as apresentacao
 
 
 def main():
-    # exemplo de uso do menu (ainda não faz nada de util, so é exibido)
     opcao = apresentacao.MenuPrincipal()
-    print(f'Opção desejada foi {opcao}')
+    while opcao != 9:
+        if opcao == 1:
+            print("Locações")
+        elif opcao == 2:
+            print("Clientes")
+        elif opcao == 3:
+            print("Carros")
+        else:
+            print("Opção inválida")
+        opcao = apresentacao.MenuPrincipal()
     ###
     print("*"*30)
     print("Exemplo de carregamento de dados de um arquivo csv")

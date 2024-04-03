@@ -31,7 +31,43 @@ def MenuPrincipal() -> int :
         opcao = int(input("Opção -> "))            
     return opcao
 
-#################################################################    
+################################################################# 
+def MenuClientes() -> int :
+    '''
+    Exemplo de Menu para manipulação de clientes
+    
+    Retorno    
+    -------
+    Retorna válida escolhida
+
+    '''
+    opcoes = [1,2,3,9]
+    opcao = 10
+    while opcao not in opcoes:
+        limpaTela()
+        print("#"*20)
+        print("1.Cadastrar Cliente\n2.Excluir Cliente\n3.Listar Clientes\n9.Sair")    
+        print('#'*20)
+        opcao = int(input("Opção -> "))            
+    return opcao
+def MenuCarros() -> int :
+    '''
+    Exemplo de Menu para manipulação de carros
+    
+    Retorno    
+    -------
+    Retorna válida escolhida
+
+    '''
+    opcoes = [1,2,3,9]
+    opcao = 10
+    while opcao not in opcoes:
+        limpaTela()
+        print("#"*20)
+        print("1.Cadastrar Carro\n2.Excluir Carro\n3.Listar Carros\n9.Sair")    
+        print('#'*20)
+        opcao = int(input("Opção -> "))            
+    return opcao   
 
 def CadastrarCliente() -> dict :
     '''
@@ -69,6 +105,23 @@ def CadastrarCarro() -> dict:
     Cambio_opcoes = ["manual","automático"]
     Categoria_opcoes = ["Economico","Intermediario","Conforto","Pickup"]
     for campo in l:
-        carro[campo] = input(f"{campo}:")
+        if campo == "Modelo":
+            print(f"Modelos disponíveis: {Modelo_opcoes}")
+            while carro.get(campo) not in Modelo_opcoes:
+                carro[campo] = input(f"{campo}:")
+        elif campo == "Cor":
+            print(f"Cores disponíveis: {Cor_opcoes}")
+            while carro.get(campo) not in Cor_opcoes:
+                carro[campo] = input(f"{campo}:")
+        elif campo == "Cambio":
+            print(f"Tipos de Câmbio disponíveis: {Cambio_opcoes}")
+            while carro.get(campo) not in Cambio_opcoes:
+                carro[campo] = input(f"{campo}:")
+        elif campo == "Categoria":
+            print(f"Categorias disponíveis: {Categoria_opcoes}")
+            while carro.get(campo) not in Categoria_opcoes:
+                carro[campo] = input(f"{campo}:")
+        else:
+            carro[campo] = input(f"{campo}:")
         print("#"*30)
     return carro   

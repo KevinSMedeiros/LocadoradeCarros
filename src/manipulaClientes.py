@@ -27,8 +27,9 @@ def cadastrar( listaClientes : list ) -> bool :
     Retorna True se o cliente foi cadastrado com sucesso
     '''
     cliente = apresentacao.CadastrarCliente()
-    listaClientes.append(cliente)
-    return mcsv.gravarDados('LocadoradeCarros/Cliente.csv', cliente.keys(), listaClientes )
+    if not any(c['CPF'] == cliente['CPF'] for c in listaClientes): 
+        listaClientes.append(cliente)
+        return mcsv.gravarDados('LocadoradeCarros/Cliente.csv', cliente.keys(), listaClientes )
 
 def excluir(listaClientes : list, cpf : str ) -> bool:
     '''
@@ -47,4 +48,38 @@ def excluir(listaClientes : list, cpf : str ) -> bool:
     
     
             
-    
+def atualizar(listaClientes : list, cliente : dict) -> bool:
+    '''
+    Atualiza um cliente na lista de clientes e atualiza o arquivo CSV
+    Parâmetros
+    ----------
+    listaClientes: Lista atual dos clientes
+    cliente: Dicionário contendo os dados do cliente a ser atualizado
+    Retorno
+    -------
+    Retorna True se o cliente foi atualizado com sucesso
+    '''
+    flag = False
+    camposCliente = list(listaClientes[0].keys())
+    for i, existeCliente in enumerate(listaClientes):
+        if existeCliente['CPF'] ==  cliente['CPF'] :
+            flag = True
+            listaClientes[i] = cliente
+    if flag:
+        mcsv.gravarDados("LocadoradeCarros/Cliente.csv", camposCliente, listaClientes)
+    return flag
+def busca1Cliente(listaClientes : list, cpf : str) -> dict:
+    '''
+    Busca um cliente na lista de clientes
+    Parâmetros
+    ----------
+    listaClientes: Lista atual dos clientes
+    cpf: cpf do cliente a ser buscado
+    Retorno
+    -------
+    Retorna um dicionário com os dados do cliente
+    '''
+    for cliente in listaClientes:
+        if cliente['CPF'] == cpf:
+            return cliente
+    return None

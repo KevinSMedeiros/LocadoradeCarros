@@ -1,5 +1,7 @@
 import manipulaCSV as mcsv
 import apresentacao
+from datetime import datetime
+
 
 def carregar() -> list :
     '''
@@ -43,7 +45,7 @@ def cadastrar( listaCarros : list) -> bool :
         print(listaCarros)
         return mcsv.gravarDados('LocadoradeCarros/Carro.csv', carro.keys(), listaCarros )  # Add the missing colon
     else:
-        print("Carro já cadastrado")
+        print("Placa já cadastrada")
         return False
 def excluir(listaCarros : list, placa : str ) -> bool:
     '''
@@ -79,7 +81,39 @@ def atualizar(listaCarros : list, carro : dict) -> bool:
     if flag:
         mcsv.gravarDados("LocadoradeCarros/Carro.csv", camposCarro, listaCarros)
     return flag
+def buscaCarroPorCategoria(listaCarros: list, categoria: str) -> list:
+    '''
+    Busca carros na lista de carros pela categoria
 
+    Parâmetros
+    ----------
+    listaCarros: Lista atual dos carros
+    categoria: String contendo a categoria do carro a ser buscado
+    Retorno
+    -------
+    Retorna uma lista de carros se encontrado, None caso contrário
+    '''
+    listaCarrosCategoria = []
+    for carro in listaCarros:
+        if carro['Categoria'] == categoria:
+            listaCarrosCategoria.append(carro)
+    return listaCarrosCategoria
+def carro3OuMaisAnosOu60kkm(listaCarros: list) -> list:
+    '''
+    Busca carros na lista de carros com 3 ou mais anos ou 60000 km
+
+    Parâmetros
+    ----------
+    listaCarros: Lista atual dos carros
+    Retorno
+    -------
+    Retorna uma lista de carros se encontrado, None caso contrário
+    '''
+    listaCarros3OuMaisAnosOu60kkm = []
+    for carro in listaCarros:
+        if (int(carro['AnoFabricacao']) < datetime.now().year - 3 or int(carro['Km']) >= 60000) and carro['Disponivel'] == 'True':
+            listaCarros3OuMaisAnosOu60kkm.append(carro)
+    return listaCarros3OuMaisAnosOu60kkm
 def busca1carro(listaCarros: list, placa: str) -> dict:
     '''
     Busca um carro na lista de carros pelo número da placa

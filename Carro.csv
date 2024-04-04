@@ -1,5 +1,4 @@
 Identificacao;Modelo;Cor;AnoFabricacao;Placa;Cambio;Categoria;Km;Diaria;Seguro;Disponivel
-1;;;;;;;;;;
-2;;;;;;;;;;
 1;Kwid;preto;5;123;manual;Economico;5;45;4;sim
 7;Kwid;preto;2014;kda12;manual;Economico;14;12;sim;2
+2;Polo;preto;2020;asb;manual;Economico;50000;123;123;True

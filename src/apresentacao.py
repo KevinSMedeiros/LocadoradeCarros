@@ -58,12 +58,11 @@ def MenuCarros() -> int :
     Retorna válida escolhida
 
     '''
-    opcoes = [1,2,3,9]
+    opcoes = [1,2,3,4,5,9]
     opcao = 10
     while opcao not in opcoes:
-        limpaTela()
         print("#"*20)
-        print("1.Cadastrar Carro\n2.Excluir Carro\n3.Listar Carros\n9.Sair")    
+        print("1.Cadastrar Carro\n2.Excluir Carro\n3.Listar Carros\n4.Carros a venda\n5.Buscar carro por categoria\n9.Sair")    
         print('#'*20)
         opcao = int(input("Opção -> "))            
     return opcao   
@@ -103,6 +102,7 @@ def CadastrarCarro() -> dict:
     Cor_opcoes = ["preto","cinza"]
     Cambio_opcoes = ["manual","automático"]
     Categoria_opcoes = ["Economico","Intermediario","Conforto","Pickup"]
+    Disponivel_opcoes = ["True","False"]
     for campo in l:
         if campo == "Modelo":
             print(f"Modelos disponíveis: {Modelo_opcoes}")
@@ -119,6 +119,10 @@ def CadastrarCarro() -> dict:
         elif campo == "Categoria":
             print(f"Categorias disponíveis: {Categoria_opcoes}")
             while carro.get(campo) not in Categoria_opcoes:
+                carro[campo] = input(f"{campo}:")
+        elif campo == "Disponivel":
+            print(f"Disponibilidade: {Disponivel_opcoes}")
+            while carro.get(campo) not in Disponivel_opcoes:
                 carro[campo] = input(f"{campo}:")
         else:
             carro[campo] = input(f"{campo}:")

@@ -32,6 +32,19 @@ def MenuPrincipal() -> int :
     return opcao
 
 ################################################################# 
+
+def MenuLocacao() -> int:
+
+    opcoes = [1, 2, 3, 9]
+    opcao = 10
+    while opcao not in opcoes:
+        print("#" * 20)
+        print("1.Nova Locação\n2.Finalizar Locação\n3.Relatório de Carros Locados\n9.Sair")
+        print('#' * 20)
+        opcao = int(input("Opção -> "))
+    return opcao
+
+
 def MenuClientes() -> int :
     '''
     Exemplo de Menu para manipulação de clientes
@@ -49,6 +62,8 @@ def MenuClientes() -> int :
         print('#'*20)
         opcao = int(input("Opção -> "))            
     return opcao
+
+
 def MenuCarros() -> int :
     '''
     Exemplo de Menu para manipulação de carros
@@ -66,6 +81,31 @@ def MenuCarros() -> int :
         print('#'*20)
         opcao = int(input("Opção -> "))            
     return opcao   
+    
+#################################################################
+
+def CadastrarLocacao(IdCarro, CPF, DataInicio, KmInicial, QuerSeguro) -> dict:
+
+
+    l = ["IdLocacao", "IdCarro", "CPF", "DataInicio", "DataDevolucao", "KmInicial", "KmFinal", "QuerSeguro", "ValorTotal"]
+    locacao = {}
+
+    #idLocacao = PegaPróximoId()
+
+    locacao["idLocacao"] = 0
+
+    locacao["idCarro"] = IdCarro
+    locacao["CPF"] = CPF
+    locacao["DataInicio"] = DataInicio
+    locacao["KmInicial"] = KmInicial
+
+    locacao["DataDevolucao"] = "0/0/0 0h"
+    locacao["KmFinal"] = 0
+    locacao["ValorTotal"] = 0
+
+    return locacao
+
+
 
 def CadastrarCliente() -> dict :
     '''
@@ -83,8 +123,7 @@ def CadastrarCliente() -> dict :
         cliente[campo] = input(f"{campo}:")
         print("#"*30)
     return cliente
-
-#################################################################    
+  
 
 def CadastrarCarro() -> dict:
     '''
@@ -128,6 +167,9 @@ def CadastrarCarro() -> dict:
             carro[campo] = input(f"{campo}:")
         print("#"*30)
     return carro   
+
+#################################################################
+
 def listar(lista : list):
     '''
     Lista os elementos da lista

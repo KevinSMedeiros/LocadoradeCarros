@@ -1,26 +1,53 @@
 import manipulaClientes as mcli
 import manipulaCarros as mcar
+import manipulaLocacoes as mloc
 import apresentacao as apresentacao
 
 
 def main():
     opcao = apresentacao.MenuPrincipal()
+
     while opcao != 9:
+
         if opcao == 1:
-            print("Locações")
+            opcao1 = apresentacao.MenuLocacao()
+
+            while opcao1 != 9:
+
+                if opcao1 == 1:
+                    mloc.cadastrar(mloc.carregar())
+
+                elif opcao1 == 2:
+                    cpf = input("Qual cpf do cliente que deseja excluir? ")
+                    if  mcli.excluir(mcli.carregar(), cpf) == True:
+                        print("Cliente excluido com sucesso")
+                    else:
+                        print("Cliente não encontrado")
+
+                elif opcao1 == 3:
+                    apresentacao.listar(mcli.carregar())
+
+                else:
+                    print("Opção inválida")
+
         elif opcao == 2:
             opcao2 = apresentacao.MenuClientes()
+
             while opcao2 != 9:
+
                 if opcao2 == 1:
                     mcli.cadastrar(mcli.carregar())
+
                 elif opcao2 == 2:
                     cpf = input("Qual cpf do cliente que deseja excluir? ")
                     if  mcli.excluir(mcli.carregar(), cpf) == True:
                         print("Cliente excluido com sucesso")
                     else:
                         print("Cliente não encontrado")
+
                 elif opcao2 == 3:
                     apresentacao.listar(mcli.carregar())
+
                 elif opcao2 == 4:
                     cpf = input("Qual cpf do cliente que deseja alterar? ")
                     cliente = mcli.busca1Cliente(mcli.carregar(), cpf)
@@ -29,32 +56,44 @@ def main():
                         if input() == 's':
                             cliente[campo] = input("Novo valor: ")
                     mcli.atualizar(mcli.carregar(), cliente)
+
                 else:
                     print("Opção inválida")
+
                 opcao2 = apresentacao.MenuClientes()
+
         elif opcao == 3:
             opcao3 = apresentacao.MenuCarros()
+
             while opcao3 != 9:
+
                 if opcao3 == 1:
                     mcar.cadastrar(mcar.carregar())
+
                 elif opcao3 == 2:
                     placa = input("Qual placa do carro que deseja excluir? ")
                     if  mcar.excluir(mcar.carregar(), placa) == True:
                         print("Carro excluido com sucesso")
                     else:
                         print("Carro não encontrado")
+
                 elif opcao3 == 3:
                     apresentacao.listar(mcar.carrergarCarrosDisponiveis())
+
                 elif opcao3 == 4:
                     apresentacao.listar(mcar.carro3OuMaisAnosOu60kkm(mcar.carregar()))
+
                 elif opcao3 == 5:
                     categoria = input("Qual categoria deseja buscar? opções: Economico, Intermediario, Conforto, Pickup")
                     apresentacao.listar(mcar.buscaCarroPorCategoria(mcar.carregar(), categoria))
+
                 else:
                     print("Opção inválida")
+
                 opcao3 = apresentacao.MenuCarros()
         else:
             print("Opção inválida")
+
         opcao = apresentacao.MenuPrincipal()   
 
 # Inicio do programa 

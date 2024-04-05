@@ -84,24 +84,38 @@ def MenuCarros() -> int :
     
 #################################################################
 
-def CadastrarLocacao(IdCarro, CPF, DataInicio, KmInicial, QuerSeguro) -> dict:
+def CadastrarLocacao(IdLocacao, IdCarro, CPF, DataInicio, KmInicial, QuerSeguro) -> dict:
 
 
-    l = ["IdLocacao", "IdCarro", "CPF", "DataInicio", "DataDevolucao", "KmInicial", "KmFinal", "QuerSeguro", "ValorTotal"]
+    # l = ["IdLocacao", "IdCarro", "CPF", "DataInicio", "DataDevolucao", "KmInicial", "KmFinal", "QuerSeguro", "ValorTotal"]
     locacao = {}
 
     #idLocacao = PegaPróximoId()
 
-    locacao["idLocacao"] = 0
+    locacao["IdLocacao"] = int(IdLocacao)
 
-    locacao["idCarro"] = IdCarro
+    locacao["IdCarro"] = int(IdCarro)
     locacao["CPF"] = CPF
     locacao["DataInicio"] = DataInicio
-    locacao["KmInicial"] = KmInicial
-
     locacao["DataDevolucao"] = "0/0/0 0h"
+    locacao["KmInicial"] = int(KmInicial)
     locacao["KmFinal"] = 0
+    locacao["QuerSeguro"] = QuerSeguro
     locacao["ValorTotal"] = 0
+
+    return locacao
+
+
+def EncerrarLocacao(locacao, dataLocacao, kmLocacao: int, idLocacao: int) -> dict:
+
+    # l = ["IdLocacao", "IdCarro", "CPF", "DataInicio", "DataDevolucao", "KmInicial", "KmFinal", "QuerSeguro", "ValorTotal"]
+    #locacao = {}
+
+    locacao["IdLocacao"] = idLocacao
+
+    locacao["DataDevolucao"] = dataLocacao
+    locacao["KmFinal"] = kmLocacao
+    locacao["ValorTotal"] = 99999
 
     return locacao
 

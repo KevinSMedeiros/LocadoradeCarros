@@ -5,89 +5,130 @@ import apresentacao
 
 def carregar() -> list:
     lista = mcsv.carregarDados("Locacao.csv")
+    #print(lista)
     return lista
-    
+
 
 def cadastrar( listaLocacoes : list ) -> bool :
 
+    l = ["IdLocacao", "IdCarro", "CPF", "DataInicio", "DataDevolucao", "KmInicial", "KmFinal", "QuerSeguro", "ValorTotal"]
+
+    # enumera as possiveis opcoes de pesquisa de carros
     Categoria_opcoes = ["Economico", "Intermediario", "Conforto", "Pickup"]
     Cambio_opcoes = ["manual", "automático"]
-    Seguro_opcoes = ["True", "False"]
+    Bool_opcoes = ["True", "False"]
 
     CategoriaCarro = ""
     CambioCarro = ""
-    SeguroOpcao = ""
+    QuerSeguro = ""
 
-    CPF = input("Digite o CPF: ")
+    print("\n######## NOVA LOCAÇÃO ########")
 
-    print(f"Categoria do carro que deseja: {Categoria_opcoes}")
+    IdLocacao = mcsv.pegaProximoId("Locacao.csv")
+
+    CPF = input("\nDigite o CPF: ")
+
+    print(f"\nCategoria do carro que deseja: {Categoria_opcoes}")
     while CategoriaCarro not in Categoria_opcoes:
         CategoriaCarro = input(f"{"Categoria"}:")
 
-    print(f"Tipo de câmbio que deseja: {Cambio_opcoes}")
+    print(f"\nTipo de câmbio que deseja: {Cambio_opcoes}")
     while CambioCarro not in Cambio_opcoes:
         CambioCarro = input(f"{"Cambio"}:")
 
-    print(f"Quer seguro? {Seguro_opcoes}")
-    while SeguroOpcao not in Seguro_opcoes:
-        SeguroOpcao = input(f"{"Seguro"}:")
+    print(f"\nQuer seguro? {Bool_opcoes}")
+    while QuerSeguro not in Bool_opcoes:
+        QuerSeguro = input(f"{"Seguro"}:")
 
-    #l = ["Identificacao", "Modelo", "Cor", "AnoFabricacao", "Placa", "Cambio", "Categoria", "Km", "Diaria", "Seguro",
-    #     "Disponivel"]
-    #carro = {}
+    DataInicio = input("\nDigite a data e hora atual (Formato DD/MM/AAAA XXh): ")
 
     listaCarros = mcar.carrergarCarrosDisponiveis()
 
+    achou = -1
+    # varre todos os carros em busca de algum com todas as características desejadas
     for carro in listaCarros:
+        print(f"Modelo: {carro["Modelo"]}")
         if carro["Categoria"] == CategoriaCarro and carro["Cambio"] == CambioCarro:
-            #apresentacao.listar(carro)
-            IdCarro = carro["Identificacao"]
-            KmInicial = carro["Km"]
 
-    DataInicio = input("Digite a data e hora atual (Formato DD/MM/AAAA XXh): ")
+            print("\nCarro encontrado:\n")
+            print(f"Modelo: {carro["Modelo"]}")
+            print(f"Cor: {carro["Cor"]}")
+            print(f"Preço da Diária: R${carro["Diaria"]}")
+            if QuerSeguro == "True":
+                print(f"Preço do Seguro: {carro["Seguro"]}")
+            print(f"Quilometragem Atual: {carro["Km"]}")
+            print(f"Placa do Carro: {carro["Placa"]}")
 
-    locacao = apresentacao.CadastrarLocacao(IdCarro, CPF, DataInicio, KmInicial, SeguroOpcao)
-    listaLocacoes.append(locacao)
-    return mcsv.gravarDados('Locacao.csv', locacao.keys(), listaLocacoes)
+            # opção pra aceitar ou não o carro. se rejeitar, procura outro
+            AceitaCarro = ""
+            print(f"\nAceita esse carro? {Bool_opcoes}")
+            while AceitaCarro not in Bool_opcoes:
+                AceitaCarro = input("Opções: ")
+            if AceitaCarro == "True":
+                achou = 1
+                break
 
-def excluir(listaLocacoes : list, cpf : str ) -> bool:
-    '''
-    Excluir um cliente da lista de clientes e atualiza o arquivo CSV
-    '''
+    if achou == 1:  # se conseguiu encontrar algum carro com as características desejadas
+        IdCarro = carro["Identificacao"]
+        KmInicial = carro["Km"]
+
+        locacao = apresentacao.CadastrarLocacao(IdLocacao, IdCarro, CPF, DataInicio, KmInicial, QuerSeguro)
+        listaLocacoes.append(locacao)
+
+        carro["Disponivel"] = False  # marca que o carro ficou indisponível
+        mcar.atualizar(mcar.carregar(), carro)
+
+        return mcsv.gravarDados('Locacao.csv', list(locacao.keys()), listaLocacoes)
+
+    else:  # se nao existir nenhum carro nas caracteristicas desejadas, ou se rejeitou todos que foram oferecidos
+        print("\nNão há carro disponível com essas características\n")
+        return False
+
+
+
+def encerrar( listaLocacoes : list ) -> bool :
+
+    idLocacao = input("\nDigite o id da locação: ")
+    dataLocacao = input("\nDigite a data e hora da devolução: ")
+    kmLocacao = input("\nDigite a quilometragem do carro no momento da entrega: ")
+
+    locacao = mcsv.retornaNaLinha("Locacao.csv", int(idLocacao) - 1)
+    #print(f"AQUI ESTA {locacao}")
+    locacao = apresentacao.EncerrarLocacao(locacao, dataLocacao, kmLocacao, idLocacao)
+
+    if atualizar(carregar(), locacao):
+
+        carro = mcar.buscaCarroPorId(mcar.carregar(), locacao["IdCarro"])
+
+        carro["Disponivel"] = True  # marca que o carro ficou disponível
+        if mcar.atualizar(mcar.carregar(), carro):
+            return True
+        else:
+            print("Erro ao atualizar carro")
+            return False
+    else:
+        print("Erro ao atualizar locacao")
+        return False
+
+
+def atualizar(listaLocacoes: list, locacao: dict) -> bool:
+
     flag = False
-    camposLocacao = list(listaLocacoes[0].keys())
-    for i,locacao in enumerate(listaLocacoes):
-        if locacao['CPF'] ==  cpf :
-            flag = True
-            listaLocacoes.pop(i)
-    #print(listaLocacoes)
-    if flag:
-        mcsv.gravarDados("Locacao.csv", camposLocacao, listaLocacoes)
-    return flag
-    
-    
-            
-def atualizar(listaLocacoes : list, locacao : dict) -> bool:
-    '''
-    Atualiza um cliente na lista de clientes e atualiza o arquivo CSV
-    Parâmetros
-    ----------
-    listaClientes: Lista atual dos clientes
-    cliente: Dicionário contendo os dados do cliente a ser atualizado
-    Retorno
-    -------
-    Retorna True se o cliente foi atualizado com sucesso
-    '''
-    flag = False
-    camposLocacao = list(listaLocacoes[0].keys())
+    camposLocacao = list(["IdLocacao", "IdCarro", "CPF", "DataInicio", "DataDevolucao", "KmInicial", "KmFinal", "QuerSeguro", "ValorTotal"])
+
     for i, existeLocacao in enumerate(listaLocacoes):
-        if existeLocacao['CPF'] ==  locacao['CPF'] :
+        # aux = mcsv.retornaNaLinha("Locacao.csv", i)
+
+        #if aux["IdLocacao"] == locacao["IdLocacao"]:
+        if existeLocacao["IdLocacao"] == locacao["IdLocacao"]:
             flag = True
             listaLocacoes[i] = locacao
     if flag:
-        mcsv.gravarDados("Cliente.csv", camposLocacao, listaLocacoes)
+        mcsv.gravarDados("Locacao.csv", camposLocacao, listaLocacoes)
     return flag
-def busca1Locacao(listaLocacoes : list, cpf : str) -> dict:
+
+
+def busca1Locacao(listaLocacoes : list, idLocacao : int) -> list:
     '''
     Busca um cliente na lista de clientes
     Parâmetros
@@ -98,7 +139,7 @@ def busca1Locacao(listaLocacoes : list, cpf : str) -> dict:
     -------
     Retorna um dicionário com os dados do cliente
     '''
-    for cliente in listaLocacoes:
-        if cliente['CPF'] == cpf:
-            return cliente
+    for locacao in listaLocacoes:
+        if locacao["IdLocacao"] == idLocacao:
+            return locacao
     return None

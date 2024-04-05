@@ -5,13 +5,13 @@ import datetime
 import math
 
 
-def carregar() -> list:
-    lista = mcsv.carregarDados("Locacao.csv")
+def carregar() -> list:  # chama função para puxar as informações do arquivo como uma lista
+    lista = mcsv.carregarDados("Locacao.csv") 
     #print(lista)
     return lista
 
 
-def cadastrar( listaLocacoes : list ) -> bool :
+def cadastrar( listaLocacoes : list ) -> bool :  # adicionar nova locação
 
     l = ["IdLocacao", "IdCarro", "CPF", "DataInicio", "DataDevolucao", "KmInicial", "KmFinal", "QuerSeguro", "ValorTotal"]
 
@@ -26,7 +26,7 @@ def cadastrar( listaLocacoes : list ) -> bool :
 
     print("\n######## NOVA LOCAÇÃO ########")
 
-    IdLocacao = mcsv.pegaProximoId("Locacao.csv")
+    IdLocacao = mcsv.pegaProximoId("Locacao.csv")  # o id é igual ao id anterior + 1
 
     CPF = input("\nDigite o CPF: ")
 
@@ -49,7 +49,7 @@ def cadastrar( listaLocacoes : list ) -> bool :
     for carro in listaCarros:
         print(f"Modelo: {carro["Modelo"]}")
         if carro["Categoria"] == CategoriaCarro and carro["Cambio"] == CambioCarro:
-
+            # se a categoria e o cambio for igual aos que o usuario quer
             print("\nCarro encontrado:\n")
             print(f"Modelo: {carro["Modelo"]}")
             print(f"Cor: {carro["Cor"]}")
@@ -75,7 +75,7 @@ def cadastrar( listaLocacoes : list ) -> bool :
         DiaMesAno = input("\nDigite a data atual (Formato DD/MM/AAAA): ")
         HoraMinuto = input("\nDigite o horário atual (Formato HH:MM): ")
 
-        DataInicio = DiaMesAno + " " + HoraMinuto
+        DataInicio = DiaMesAno + " " + HoraMinuto  # junta dia e hora na mesma string
 
         locacao = apresentacao.CadastrarLocacao(IdLocacao, IdCarro, CPF, DataInicio, KmInicial, QuerSeguro)
         listaLocacoes.append(locacao)
@@ -83,7 +83,7 @@ def cadastrar( listaLocacoes : list ) -> bool :
         carro["Disponivel"] = False  # marca que o carro ficou indisponível
         mcar.atualizar(mcar.carregar(), carro)
 
-        return mcsv.gravarDados('Locacao.csv', list(locacao.keys()), listaLocacoes)
+        return mcsv.gravarDados('Locacao.csv', list(locacao.keys()), listaLocacoes)  # chama função pra salvar a nova locação
 
     else:  # se nao existir nenhum carro nas caracteristicas desejadas, ou se rejeitou todos que foram oferecidos
         print("\nNão há carro disponível com essas características\n")
@@ -91,13 +91,15 @@ def cadastrar( listaLocacoes : list ) -> bool :
 
 
 
-def encerrar( listaLocacoes : list ) -> bool :
+def encerrar( listaLocacoes : list ) -> bool :  # função para marcar locação como finalizada
 
     idLocacao = input("\nDigite o id da locação: ")
-    locacao = mcsv.retornaNaLinha("Locacao.csv", int(idLocacao) - 1)
+    locacao = mcsv.retornaNaLinha("Locacao.csv", int(idLocacao) - 1)  # puxa as informações da locação com o id digitado
     Dia = locacao["DataDevolucao"]
 
     while Dia != "00/00/0000 00:00":
+        # se a data de devolucao não for só zeros, significa que a locação já foi encerrada
+        # o id de outra locação vai ser pedido
         idLocacao = input("\nEssa locação já foi finalizada. Digite outro id: ")
         locacao = mcsv.retornaNaLinha("Locacao.csv", int(idLocacao) - 1)
         Dia = locacao["DataDevolucao"]
@@ -108,23 +110,24 @@ def encerrar( listaLocacoes : list ) -> bool :
     DiaMesAno = input("\nDigite a data da devolução (Formato DD/MM/AAAA): ")
     HoraMinuto = input("\nDigite o horário da devolução (Formato HH:MM): ")
 
-    dataLocacao = DiaMesAno + " " + HoraMinuto
+    dataLocacao = DiaMesAno + " " + HoraMinuto  # junta o dia e a hora na mesma string
     # dataLocacao = formataData(DiaMesAno, HoraMinuto)
 
 
     #print(f"AQUI ESTA {locacao}")
     locacao = apresentacao.EncerrarLocacao(locacao, dataLocacao, kmLocacao, idLocacao)
 
-    valorTotal = calculaValorTotal(locacao)
+    valorTotal = calculaValorTotal(locacao)  # função pra calcular o valor final
     locacao["ValorTotal"] = valorTotal
 
 
-    if atualizar(carregar(), locacao):
+    if atualizar(carregar(), locacao): # se conseguiu atualizar
 
         carro = mcar.buscaCarroPorId(mcar.carregar(), locacao["IdCarro"])
         carro["Km"] = locacao["KmFinal"]
         carro["Disponivel"] = True  # marca que o carro ficou disponível
-        if mcar.atualizar(mcar.carregar(), carro):
+        
+        if mcar.atualizar(mcar.carregar(), carro):  # se conseguiu atualizar o carro
             print(f"\nValor total da locação: R${valorTotal}")
             return True
         else:
@@ -140,62 +143,51 @@ def atualizar(listaLocacoes: list, locacao: dict) -> bool:
     flag = False
     camposLocacao = list(["IdLocacao", "IdCarro", "CPF", "DataInicio", "DataDevolucao", "KmInicial", "KmFinal", "QuerSeguro", "ValorTotal"])
 
+    # procura por uma locação com o id definido
     for i, existeLocacao in enumerate(listaLocacoes):
-        # aux = mcsv.retornaNaLinha("Locacao.csv", i)
-
-        #if aux["IdLocacao"] == locacao["IdLocacao"]:
-        if existeLocacao["IdLocacao"] == locacao["IdLocacao"]:
+        if existeLocacao["IdLocacao"] == locacao["IdLocacao"]:  
             flag = True
             listaLocacoes[i] = locacao
-    if flag:
+            
+    if flag:  # se achou, então grava na linha certa
         mcsv.gravarDados("Locacao.csv", camposLocacao, listaLocacoes)
+        
     return flag
 
 
-def busca1Locacao(listaLocacoes : list, idLocacao : int) -> list:
-    '''
-    Busca um cliente na lista de clientes
-    Parâmetros
-    ----------
-    listaClientes: Lista atual dos clientes
-    cpf: cpf do cliente a ser buscado
-    Retorno
-    -------
-    Retorna um dicionário com os dados do cliente
-    '''
-    for locacao in listaLocacoes:
-        if locacao["IdLocacao"] == idLocacao:
-            return locacao
-    return None
+########################################################
 
+
+def formataData(data, horario):
+    # (DD/MM/AAAA) (HH:MM)
+    data = data + " " + horario  # pega o dia e o horario e junta na mesma string
+    dataAux = datetime.datetime.strptime(data, "%d/%m/%Y %H:%M")
+
+    return dataAux
 
 def puxaDiaMesAno(horario):
-
+    # função pega string no formato "DD/MM/AAAA HH:MM"
     dataAux = datetime.datetime.strptime(horario, "%d/%m/%Y %H:%M")
-
+    
+    # Devolve só "DD/MM/AAAA"
     data = dataAux.strftime("%d/%m/%Y")
 
     return data
 
 def puxaHorario(horario):
-    # Convertendo a string para um objeto datetime
+    # função pega string no formato "DD/MM/AAAA HH:MM"
+    
     horarioAux = datetime.datetime.strptime(horario, "%d/%m/%Y %H:%M")
 
-    # Formatando a data no novo formato
+    # Devolve só "HH:MM"
     horario = horarioAux.strftime("%H:%M")
 
     return horario
 
-def formataData(data, horario):
-    # (DD/MM/AAAA) (HH:MM)
-    data = data + " " + horario
-    dataAux = datetime.datetime.strptime(data, "%d/%m/%Y %H:%M")
-
-    return dataAux
 
 def contaTempo(data1: datetime.datetime, data2: datetime.datetime):
-    tempo_decorrido = data2 - data1
-    # print(tempo_decorrido)
+    tempo_decorrido = data2 - data1  # calcula a diferença de tempo entre a data de inicio e a data final
+    
     if (tempo_decorrido.days > 0):
         [dummy, horas] = str(tempo_decorrido).split(',')
         [horas, minutos, segundos] = horas.split(":")
@@ -205,35 +197,32 @@ def contaTempo(data1: datetime.datetime, data2: datetime.datetime):
     dias = tempo_decorrido.days
     hrs = math.trunc(tempo_decorrido.seconds/3600)
 
-    #print(f"{dias} dias e {hrs} horas utilizadas")
-
-    tempo = {"dias": dias, "horas": hrs}
+    tempo = {"dias": dias, "horas": hrs}  # dicionario com campos separados pra dia e horario
 
     return tempo
 
+########################################################
+
 def calculaValorTotal(locacao) -> float:
-    # pega a data inicial e final, conta a diferenca de tempo
-    # a cada 24h cobra uma diária, horas restantes são consideradas frações
 
-    carroLocado = mcar.buscaCarroPorId(mcar.carregar(), locacao["IdCarro"])
-    print(carroLocado)
-    precoDiaria = float(carroLocado["Diaria"])
+    carroLocado = mcar.buscaCarroPorId(mcar.carregar(), locacao["IdCarro"])  # puxa dados do carro
+    precoDiaria = float(carroLocado["Diaria"]) 
 
 
-    if locacao["QuerSeguro"] == "True":
+    if locacao["QuerSeguro"] == "True":  # se quer seguro, o preço é adicionado
         precoSeguro = float(carroLocado["Seguro"])
-    else:
+    else:  # se não, fica 0
         precoSeguro = 0
 
-
+    #  pega as datas de inicio e devolução no formato certo
     data1 = formataData(puxaDiaMesAno(locacao["DataInicio"]), puxaHorario(locacao["DataInicio"]))
     data2 = formataData(puxaDiaMesAno(locacao["DataDevolucao"]), puxaHorario(locacao["DataDevolucao"]))
 
-    tempo = contaTempo(data1, data2)
+    tempo = contaTempo(data1, data2)  # calcula o tempo que carro ficou com o cliente
 
-    if tempo["dias"] >= 1:
+    if tempo["dias"] >= 1:  #  se diaria foi mais que 24 horas
         valorTotal = (precoDiaria + precoSeguro) * (tempo["dias"] + tempo["horas"]/24)
-    else:
+    else:  # se foi menos que 24 horas, cliente paga diaria completa
         valorTotal = precoDiaria + precoSeguro
 
     return valorTotal

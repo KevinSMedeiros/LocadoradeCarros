@@ -97,13 +97,14 @@ def CadastrarLocacao(IdLocacao, IdCarro, CPF, DataInicio, KmInicial, QuerSeguro)
     locacao["IdCarro"] = int(IdCarro)
     locacao["CPF"] = CPF
     locacao["DataInicio"] = DataInicio
-    locacao["DataDevolucao"] = "0/0/0 0h"
+    locacao["DataDevolucao"] = "00/00/0000 00:00"
     locacao["KmInicial"] = int(KmInicial)
     locacao["KmFinal"] = 0
     locacao["QuerSeguro"] = QuerSeguro
     locacao["ValorTotal"] = 0
 
     return locacao
+
 
 
 def EncerrarLocacao(locacao, dataLocacao, kmLocacao: int, idLocacao: int) -> dict:

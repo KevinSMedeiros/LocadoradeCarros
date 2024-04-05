@@ -1,5 +1,25 @@
 import csv
 
+def retornaNaLinha(nomeArquivo: str, indice: int) -> dict:
+    # retorna um dicionario que representa as informações na linha que quiser
+    with open(nomeArquivo, 'r') as arquivo:
+        leitorCsv = csv.reader(arquivo, delimiter=';')
+
+        cabecalho = next(leitorCsv)
+
+        for i, linha in enumerate(leitorCsv):
+            if i == indice:
+                return {cabecalho[j]: linha[j] for j in range(len(cabecalho))}
+
+    return {}
+
+
+def pegaProximoId(nomeArquivo: str):
+    # serve para que o id ao cadastrar um item seja 1 a mais que o anterior
+    arquivo = open(nomeArquivo, 'r')
+    numeroDeLinhas = len(arquivo.readlines())
+    return numeroDeLinhas
+
  
 def carregarDados( nomeArquivo: str) -> list : 
     ''' Carrega do arquivo CSV uma lista de informações, com cada item

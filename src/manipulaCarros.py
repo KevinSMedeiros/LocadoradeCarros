@@ -1,4 +1,6 @@
 import manipulaCSV as mcsv
+import manipulaLocacoes as mloc
+import manipulaClientes as mcli
 import apresentacao
 from datetime import datetime
 
@@ -12,7 +14,7 @@ def carregar() -> list :
     Retorna uma lista vazia caso o arquivo não exista ou 
     uma lista de dicionários contendo os dados dos clientes
     '''
-    lista = mcsv.carregarDados("LocadoradeCarros/Carro.csv")
+    lista = mcsv.carregarDados("Carro.csv")
     return lista
 def carrergarCarrosDisponiveis() -> list:
     '''
@@ -38,12 +40,13 @@ def cadastrar( listaCarros : list) -> bool :
     -------
     Retorna True se o carro foi cadastrado com sucesso
     '''
-    carro = apresentacao.CadastrarCarro()
+    identificacao = mcsv.pegaProximoId("Carro.csv")
+    carro = apresentacao.CadastrarCarro(identificacao)
     #averigua se há carro com tal placa
     if not any(c['Placa'] == carro['Placa'] for c in listaCarros):
         listaCarros.append(carro)
         print(listaCarros)
-        return mcsv.gravarDados('LocadoradeCarros/Carro.csv', carro.keys(), listaCarros )  # Add the missing colon
+        return mcsv.gravarDados('Carro.csv', carro.keys(), listaCarros )  # Add the missing colon
     else:
         print("Placa já cadastrada")
         return False
@@ -59,7 +62,7 @@ def excluir(listaCarros : list, placa : str ) -> bool:
             listaCarros.pop(i)
     #print(listaClientes)
     if flag:
-        mcsv.gravarDados("LocadoradeCarros/Carro.csv", camposCarro, listaCarros)
+        mcsv.gravarDados("Carro.csv", camposCarro, listaCarros)
     return flag
 def atualizar(listaCarros : list, carro : dict) -> bool:
     '''
@@ -79,7 +82,7 @@ def atualizar(listaCarros : list, carro : dict) -> bool:
             flag = True
             listaCarros[i] = carro
     if flag:
-        mcsv.gravarDados("LocadoradeCarros/Carro.csv", camposCarro, listaCarros)
+        mcsv.gravarDados("Carro.csv", camposCarro, listaCarros)
     return flag
 def buscaCarroPorCategoria(listaCarros: list, categoria: str) -> list:
     '''
@@ -130,3 +133,75 @@ def busca1carro(listaCarros: list, placa: str) -> dict:
          if carro['Placa'] == placa:
              return carro
     return None
+
+def buscaCarroPorId(listaCarros: list, identificacao: int) -> dict:
+    '''
+    Busca um carro na lista de carros pelo número da placa
+
+    Parâmetros
+    ----------
+    listaCarros: Lista atual dos carros
+    placa: String contendo a placa do carro a ser buscado
+     Retorno
+        -------
+    Retorna o carro se encontrado, None caso contrário
+    '''
+    for carro in listaCarros:
+        if carro['Identificacao'] == identificacao:
+            return carro
+    return None
+
+
+def mostraCarrosLocados() -> bool:
+
+    print("\n#### RELATÓRIO DE CARROS LOCADOS ####\n")
+
+    listaCarros = carregar()
+    listaLocacoes = mloc.carregar()
+    listaClientes = mcli.carregar()
+
+    valorAReceber = 0
+
+    ##print(listaLocacoes)
+
+    DiaMesAno = input("\nDigite a data atual (Formato DD/MM/AAAA): ")
+    HoraMinuto = input("\nDigite o horário atual (Formato HH:MM): ")
+
+    DataFinal = mloc.formataData(DiaMesAno, HoraMinuto)
+
+    for i in range(len(listaLocacoes)):
+        locacao = mcsv.retornaNaLinha("Locacao.csv", i)  # puxa as informações da locação com o id digitado
+        #print(locacao)
+        Dia = locacao["DataDevolucao"]
+        #print(Dia)
+
+        if Dia == "00/00/0000 00:00":
+            # se a data de devolução  for só zeros, significa que a locação ainda está em andamento
+
+            CPF = locacao["CPF"]
+
+            carro = buscaCarroPorId(listaCarros, locacao["IdCarro"])
+            cliente = mcli.busca1Cliente(listaClientes, CPF)
+            if cliente is None:
+                print("Não existe cliente com esse CPF. Vamos cadastrar um novo: ")
+                mcli.cadastrar(mcli.carregar())
+
+
+            nome = cliente["Nome"]
+            inicioLocacao = locacao["DataInicio"]
+            modelo = carro["Modelo"]
+            categoria = carro["Categoria"]
+            placa = carro["Placa"]
+
+            valorAReceber = valorAReceber + mloc.calculaValorTotal(locacao, DataFinal)
+
+            print(f"\nCARRO {carro["Identificacao"]}: ")
+            print(f"CPF do Cliente: {CPF}")
+            print(f"Nome do Cliente: {nome}")
+            print(f"Início da Locação: {inicioLocacao}")
+            print(f"Modelo do Carro: {modelo}")
+            print(f"Categoria do Carro: {categoria}")
+            print(f"Placa do Carro: {placa}")
+
+    print(f"Valor total a receber até o momento: R${valorAReceber}")
+    return True

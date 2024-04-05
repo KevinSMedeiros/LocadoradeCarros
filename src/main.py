@@ -7,25 +7,31 @@ import apresentacao as apresentacao
 def main():
     opcao = apresentacao.MenuPrincipal()
 
-    while opcao != 9:
+        while opcao != 9:
 
         if opcao == 1:
             opcao1 = apresentacao.MenuLocacao()
 
             while opcao1 != 9:
 
-                if opcao1 == 1:
-                    mloc.cadastrar(mloc.carregar())
-
-                elif opcao1 == 2:
-                    cpf = input("Qual cpf do cliente que deseja excluir? ")
-                    if  mcli.excluir(mcli.carregar(), cpf) == True:
-                        print("Cliente excluido com sucesso")
+                if opcao1 == 1:  # cadastrar nova locação
+                    if mloc.cadastrar(mloc.carregar()):
+                        print("\nLocação registrada com sucesso\n")
+                        break
                     else:
-                        print("Cliente não encontrado")
+                        break
 
-                elif opcao1 == 3:
-                    apresentacao.listar(mcli.carregar())
+                elif opcao1 == 2:  # finalizar locação
+                    if mloc.encerrar(mloc.carregar()):
+                        print("\nLocação finalizada com sucesso\n")
+                        break
+                    else:
+                        print("\nLocação não finalizada\n")
+                        break
+
+                elif opcao1 == 3:  # relatório de carros locados
+                    mcar.mostraCarrosLocados()
+                    break
 
                 else:
                     print("Opção inválida")

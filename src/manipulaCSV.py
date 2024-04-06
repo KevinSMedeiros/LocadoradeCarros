@@ -1,6 +1,17 @@
 import csv
 
 def retornaNaLinha(nomeArquivo: str, indice: int) -> dict:
+    """ Carrega do arquivo CSV um dicionário que representa os dados salvos naquela linha específica
+
+        Parâmetros
+        ----------
+        nomeArquivo: nome do arquivo que contém os dados que se deseja carregar
+        indice: inteiro representando a linha a ser carregada no arquivo
+
+        Retorno
+        -------
+        Retorna um dicionário contendo os dados da linha desejada
+        """
     # retorna um dicionario que representa as informações na linha que quiser
     with open(nomeArquivo, 'r') as arquivo:
         leitorCsv = csv.reader(arquivo, delimiter=';')
@@ -15,9 +26,18 @@ def retornaNaLinha(nomeArquivo: str, indice: int) -> dict:
 
 
 def pegaProximoId(nomeArquivo: str):
-    # serve para que o id ao cadastrar um item seja 1 a mais que o anterior
+    """ Serve para que o id ao cadastrar um item seja 1 a mais que o anterior
+
+        Parâmetros
+        ----------
+        nomeArquivo: nome do arquivo que contém os dados que se deseja carregar
+
+        Retorno
+        -------
+        Retorna um inteiro representando o número de linhas detectadas
+        """
     arquivo = open(nomeArquivo, 'r')
-    numeroDeLinhas = len(arquivo.readlines())
+    numeroDeLinhas = len(arquivo.readlines())  # readlines gera uma lista de linhas, aí o len conta o número delas
     return numeroDeLinhas
 
  

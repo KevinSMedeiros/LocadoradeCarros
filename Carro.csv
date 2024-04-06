@@ -1,4 +1,8 @@
 Identificacao;Modelo;Cor;AnoFabricacao;Placa;Cambio;Categoria;Km;Diaria;Seguro;Disponivel
-1;Kwid;preto;5;123;manual;Economico;5;45;4;sim
-7;Kwid;preto;2014;kda12;manual;Economico;14;12;sim;2
-2;Polo;preto;2020;asb;manual;Economico;50000;123;123;True
+1;Kwid;preto;2000;UFMT-1111;manual;Economico;15;120;60;False
+2;Renegade;cinza;2019;PED-1234;manual;Economico;100;50;50;True
+3;T-Cross;preto;2024;NPC-0000;automático;Economico;1000;70;50;False
+4;Polo;cinza;2016;PLA-1111;automático;Intermediario;250;90;100;True
+5;Corola;preto;2020;COR-1234;manual;Conforto;750;120;70;True
+6;Hillux;cinza;2022;HIL-9876;automático;Pickup;400;180;100;True
+7;Kwid;cinza;2019;KWI-0000;automático;Economico;90;150;80;True

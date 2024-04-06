@@ -153,6 +153,12 @@ def buscaCarroPorId(listaCarros: list, identificacao: int) -> dict:
 
 
 def mostraCarrosLocados() -> bool:
+    '''
+        Varre todas as locações em busca daquelas que ainda estão em andamento
+        Quando encontra alguma, o algoritmo puxa todas as informações relacionadas dos outros arquivos
+
+        No final, o valor total é calculado com base na data atual e as informações são printadas
+    '''
 
     print("\n#### RELATÓRIO DE CARROS LOCADOS ####\n")
 
@@ -165,7 +171,7 @@ def mostraCarrosLocados() -> bool:
     ##print(listaLocacoes)
 
     DiaMesAno = input("\nDigite a data atual (Formato DD/MM/AAAA): ")
-    HoraMinuto = input("\nDigite o horário atual (Formato HH:MM): ")
+    HoraMinuto = input("Digite o horário atual (Formato HH:MM): ")
 
     DataFinal = mloc.formataData(DiaMesAno, HoraMinuto)
 
@@ -183,8 +189,7 @@ def mostraCarrosLocados() -> bool:
             carro = buscaCarroPorId(listaCarros, locacao["IdCarro"])
             cliente = mcli.busca1Cliente(listaClientes, CPF)
             if cliente is None:
-                print("Não existe cliente com esse CPF. Vamos cadastrar um novo: ")
-                mcli.cadastrar(mcli.carregar())
+                print("Erro ao carregar o cliente")
 
 
             nome = cliente["Nome"]
@@ -194,6 +199,7 @@ def mostraCarrosLocados() -> bool:
             placa = carro["Placa"]
 
             valorAReceber = valorAReceber + mloc.calculaValorTotal(locacao, DataFinal)
+            valorAReceber = round(valorAReceber, 2)
 
             print(f"\nCARRO {carro["Identificacao"]}: ")
             print(f"CPF do Cliente: {CPF}")
@@ -203,5 +209,5 @@ def mostraCarrosLocados() -> bool:
             print(f"Categoria do Carro: {categoria}")
             print(f"Placa do Carro: {placa}")
 
-    print(f"Valor total a receber até o momento: R${valorAReceber}")
+    print(f"\nValor total a receber até o momento: R${valorAReceber}\n")
     return True

@@ -10,9 +10,10 @@ def limpaTela():
     else:
         _ = system("clear")
 
-#################################################################        
+#################################################################
 
-def MenuPrincipal() -> int :
+
+def MenuPrincipal() -> int:
     '''
     Exemplo de Menu principal para o sistema
     
@@ -28,24 +29,33 @@ def MenuPrincipal() -> int :
         print("#"*20)
         print("1.Locações\n2.Clientes\n3.Carros\n9.Sair")    
         print('#'*20)
-        opcao = int(input("Opção -> "))            
+        opcao = int(input("Opção -> "))
+
     return opcao
 
-################################################################# 
+#################################################################
 
 def MenuLocacao() -> int:
+    '''
+    Menu para manipulação de locações
+
+    Retorno
+    -------
+    Retorna válida escolhida
+
+    '''
 
     opcoes = [1, 2, 3, 9]
     opcao = 10
     while opcao not in opcoes:
+        print("\n")
         print("#" * 20)
         print("1.Nova Locação\n2.Finalizar Locação\n3.Relatório de Carros Locados\n9.Sair")
         print('#' * 20)
         opcao = int(input("Opção -> "))
     return opcao
 
-
-def MenuClientes() -> int :
+def MenuClientes() -> int:
     '''
     Exemplo de Menu para manipulação de clientes
     
@@ -57,14 +67,16 @@ def MenuClientes() -> int :
     opcoes = [1,2,3,4,9]
     opcao = 10
     while opcao not in opcoes:
+        print("\n")
         print("#"*20)
         print("1.Cadastrar Cliente\n2.Excluir Cliente\n3.Listar Clientes\n4.Alterar informações\n9.Sair")    
         print('#'*20)
-        opcao = int(input("Opção -> "))            
+        opcao = int(input("Opção -> "))
+        print("\n")
     return opcao
 
 
-def MenuCarros() -> int :
+def MenuCarros() -> int:
     '''
     Exemplo de Menu para manipulação de carros
     
@@ -76,53 +88,18 @@ def MenuCarros() -> int :
     opcoes = [1,2,3,4,5,9]
     opcao = 10
     while opcao not in opcoes:
+        print("\n")
         print("#"*20)
         print("1.Cadastrar Carro\n2.Excluir Carro\n3.Listar Carros\n4.Carros a venda\n5.Buscar carro por categoria\n9.Sair")    
         print('#'*20)
-        opcao = int(input("Opção -> "))            
-    return opcao   
-    
+        opcao = int(input("Opção -> "))
+        print("\n")
+    return opcao
+
+
 #################################################################
 
-def CadastrarLocacao(IdLocacao, IdCarro, CPF, DataInicio, KmInicial, QuerSeguro) -> dict:
-
-
-    # l = ["IdLocacao", "IdCarro", "CPF", "DataInicio", "DataDevolucao", "KmInicial", "KmFinal", "QuerSeguro", "ValorTotal"]
-    locacao = {}
-
-    #idLocacao = PegaPróximoId()
-
-    locacao["IdLocacao"] = int(IdLocacao)
-
-    locacao["IdCarro"] = int(IdCarro)
-    locacao["CPF"] = CPF
-    locacao["DataInicio"] = DataInicio
-    locacao["DataDevolucao"] = "00/00/0000 00:00"
-    locacao["KmInicial"] = int(KmInicial)
-    locacao["KmFinal"] = 0
-    locacao["QuerSeguro"] = QuerSeguro
-    locacao["ValorTotal"] = 0
-
-    return locacao
-
-
-
-def EncerrarLocacao(locacao, dataLocacao, kmLocacao: int, idLocacao: int) -> dict:
-
-    # l = ["IdLocacao", "IdCarro", "CPF", "DataInicio", "DataDevolucao", "KmInicial", "KmFinal", "QuerSeguro", "ValorTotal"]
-    #locacao = {}
-
-    locacao["IdLocacao"] = idLocacao
-
-    locacao["DataDevolucao"] = dataLocacao
-    locacao["KmFinal"] = kmLocacao
-    locacao["ValorTotal"] = 99999
-
-    return locacao
-
-
-
-def CadastrarCliente() -> dict :
+def CadastrarCliente() -> dict:
     '''
     Procedimento que mostra os campos para cadastramento de um cliente
     
@@ -130,17 +107,16 @@ def CadastrarCliente() -> dict :
     -------
     Retorna um dicionário com as informações de um cliente    
     '''
-    print("#"*30)
-    print("Cadastramento de um novo cliente ")
+    print("####### NOVO CLIENTE #######\n")
     l = ["CPF","Nome","Nascimento","Idade","Endereco","Cidade","Estado"]
     cliente = {}
     for campo in l:
         cliente[campo] = input(f"{campo}:")
-        print("#"*30)
+    print("\n")
     return cliente
-  
 
-def CadastrarCarro() -> dict:
+
+def CadastrarCarro(identificacao) -> dict:
     '''
     Procedimento que mostra os campos para cadastramento de um carro
     
@@ -148,42 +124,53 @@ def CadastrarCarro() -> dict:
     -------
     Retorna um dicionário com as informações de um carro    
     '''
-    print("#"*30)
-    print("Cadastramento de um novo carro ")
+    print("####### NOVO CARRO #######")
+
     l = ["Identificacao","Modelo","Cor","AnoFabricacao","Placa","Cambio","Categoria", "Km", "Diaria", "Seguro", "Disponivel"]
     carro = {}
-    Modelo_opcoes = ["Kwid","Polo","Renegade","T-Cross","Corola","Hillux"]
-    Cor_opcoes = ["preto","cinza"]
-    Cambio_opcoes = ["manual","automático"]
-    Categoria_opcoes = ["Economico","Intermediario","Conforto","Pickup"]
-    Disponivel_opcoes = ["True","False"]
+
+    Modelo_opcoes = ["Kwid", "Polo", "Renegade", "T-Cross", "Corola", "Hillux"]
+    Cor_opcoes = ["preto", "cinza"]
+    Cambio_opcoes = ["manual", "automático"]
+    Categoria_opcoes = ["Economico", "Intermediario", "Conforto", "Pickup"]
+    #Disponivel_opcoes = ["True", "False"]
+
     for campo in l:
-        if campo == "Modelo":
-            print(f"Modelos disponíveis: {Modelo_opcoes}")
+
+        if campo == "Identificacao":
+           carro[campo] = identificacao
+
+        elif campo == "Modelo":
+            print(f"\nModelos disponíveis: {Modelo_opcoes}")
             while carro.get(campo) not in Modelo_opcoes:
                 carro[campo] = input(f"{campo}:")
+
         elif campo == "Cor":
-            print(f"Cores disponíveis: {Cor_opcoes}")
+            print(f"\nCores disponíveis: {Cor_opcoes}")
             while carro.get(campo) not in Cor_opcoes:
                 carro[campo] = input(f"{campo}:")
+
         elif campo == "Cambio":
-            print(f"Tipos de Câmbio disponíveis: {Cambio_opcoes}")
+            print(f"\nTipos de Câmbio disponíveis: {Cambio_opcoes}")
             while carro.get(campo) not in Cambio_opcoes:
                 carro[campo] = input(f"{campo}:")
+
         elif campo == "Categoria":
-            print(f"Categorias disponíveis: {Categoria_opcoes}")
+            print(f"\nCategorias disponíveis: {Categoria_opcoes}")
             while carro.get(campo) not in Categoria_opcoes:
                 carro[campo] = input(f"{campo}:")
+
         elif campo == "Disponivel":
-            print(f"Disponibilidade: {Disponivel_opcoes}")
-            while carro.get(campo) not in Disponivel_opcoes:
-                carro[campo] = input(f"{campo}:")
+            carro["Disponivel"] = "True"
+
         else:
-            carro[campo] = input(f"{campo}:")
-        print("#"*30)
-    return carro   
+            carro[campo] = input(f"\n{campo}:")
+
+    return carro
+
 
 #################################################################
+
 
 def listar(lista : list):
     '''

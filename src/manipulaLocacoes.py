@@ -16,8 +16,6 @@ def carregar() -> list:
         '''
     lista = mcsv.carregarDados("Locacao.csv")
     return lista
-
-
 def cadastrar(listaLocacoes: list) -> bool:  # adicionar nova locação
     '''
         Rotina para cadastrar uma locação
@@ -124,8 +122,6 @@ def cadastrar(listaLocacoes: list) -> bool:  # adicionar nova locação
     else:  # se nao existir nenhum carro nas caracteristicas desejadas, ou se rejeitou todos que foram oferecidos
         print("\nNão há carro disponível com essas características\n")
         return False
-
-
 def encerrar() -> bool:
     '''
         Função para marcar locação como finalizada
@@ -174,8 +170,6 @@ def encerrar() -> bool:
     else:
         print("Erro ao atualizar locacao")
         return False
-
-
 def atualizar(listaLocacoes: list, locacao: dict) -> bool:
     '''
         Atualiza uma locação na lista de locações e atualiza o arquivo CSV
@@ -206,11 +200,6 @@ def atualizar(listaLocacoes: list, locacao: dict) -> bool:
         mcsv.gravarDados("Locacao.csv", camposLocacao, listaLocacoes)
 
     return flag
-
-
-########################################################
-
-
 def formataData(data, horario):
     """
         Pega o dia e o horario e junta no mesmo elemento
@@ -230,8 +219,6 @@ def formataData(data, horario):
     dataAux = datetime.datetime.strptime(data, "%d/%m/%Y %H:%M")
 
     return dataAux
-
-
 def puxaDiaMesAno(data):
     '''
         Pega uma string representando data e hora e converte só para data
@@ -251,8 +238,6 @@ def puxaDiaMesAno(data):
     dataAux = dataAux.strftime("%d/%m/%Y")
 
     return dataAux
-
-
 def puxaHorario(horario):
     '''
         Pega uma string representando data e hora e converte só para hora
@@ -273,8 +258,6 @@ def puxaHorario(horario):
     horarioAux = horarioAux.strftime("%H:%M")
 
     return horarioAux
-
-
 def contaTempo(data1: datetime.datetime, data2: datetime.datetime):
     '''
         Calcula a diferença de tempo entre a data inicial e a data final da locação
@@ -302,8 +285,6 @@ def contaTempo(data1: datetime.datetime, data2: datetime.datetime):
     tempo = {"dias": dias, "horas": hrs}  # dicionario com campos separados pra dia e horario
 
     return tempo
-
-
 def calculaValorTotal(locacao, dataFinal) -> float:
     '''
         Calcula o valor total a ser pago em uma locação
@@ -339,3 +320,4 @@ def calculaValorTotal(locacao, dataFinal) -> float:
 
 
 ########################################################
+

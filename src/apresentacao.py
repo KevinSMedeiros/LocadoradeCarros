@@ -27,7 +27,7 @@ def MenuPrincipal() -> int:
     while opcao not in opcoes:
         limpaTela()
         print("#"*20)
-        print("1.Locações\n2.Clientes\n3.Carros\n9.Sair")    
+        print("1.Locações\n2.Clientes\n3.Carros\n9.Sair")
         print('#'*20)
         opcao = int(input("Opção -> "))
 
@@ -90,7 +90,7 @@ def MenuCarros() -> int:
     while opcao not in opcoes:
         print("\n")
         print("#"*20)
-        print("1.Cadastrar Carro\n2.Excluir Carro\n3.Listar Carros\n4.Carros a venda\n5.Buscar carro por categoria\n9.Sair")    
+        print("1.Cadastrar Carro\n2.Excluir Carro\n3.Listar Carros\n4.Carros a venda\n5.Buscar carro por categoria\n9.Sair")
         print('#'*20)
         opcao = int(input("Opção -> "))
         print("\n")
@@ -169,10 +169,10 @@ def VerificaCpf(cpf: str):
 def CadastrarCarro(identificacao) -> dict:
     '''
     Procedimento que mostra os campos para cadastramento de um carro
-    
+
     Retorno
     -------
-    Retorna um dicionário com as informações de um carro    
+    Retorna um dicionário com as informações de um carro
     '''
     print("####### NOVO CARRO #######")
 

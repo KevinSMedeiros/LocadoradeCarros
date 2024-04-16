@@ -22,7 +22,7 @@ def main():
                         break
 
                 elif opcao1 == 2:  # finalizar locação
-                    if mloc.encerrar(mloc.carregar()):
+                    if mloc.encerrar():
                         print("\nLocação finalizada com sucesso\n")
                         break
                     else:
@@ -41,12 +41,12 @@ def main():
 
             while opcao2 != 9:
 
-                if opcao2 == 1:
+                if opcao2 == 1:  # cadastrar novo cliente
                     mcli.cadastrar(mcli.carregar())
 
-                elif opcao2 == 2:
+                elif opcao2 == 2:  # excluir cliente
                     cpf = input("Qual cpf do cliente que deseja excluir? ")
-                    if  mcli.excluir(mcli.carregar(), cpf) == True:
+                    if mcli.excluir(mcli.carregar(), cpf) == True:
                         print("Cliente excluido com sucesso")
                     else:
                         print("Cliente não encontrado")
@@ -54,7 +54,7 @@ def main():
                 elif opcao2 == 3: # localizar locações do cliente
                     mcli.locacoesDoCliente()
 
-                elif opcao2 == 4:
+                elif opcao2 == 4:  # alterar informações do cliente
                     cpf = input("Qual cpf do cliente que deseja alterar? ")
                     cliente = mcli.busca1Cliente(mcli.carregar(), cpf)
                     for campo in cliente.keys():
@@ -73,23 +73,23 @@ def main():
 
             while opcao3 != 9:
 
-                if opcao3 == 1:
+                if opcao3 == 1:  # cadastrar novo carro
                     mcar.cadastrar(mcar.carregar())
 
-                elif opcao3 == 2:
+                elif opcao3 == 2:  # excluir carro
                     placa = input("Qual placa do carro que deseja excluir? ")
                     if  mcar.excluir(mcar.carregar(), placa) == True:
                         print("Carro excluido com sucesso")
                     else:
                         print("Carro não encontrado")
 
-                elif opcao3 == 3:
+                elif opcao3 == 3:  # listar carros
                     apresentacao.listar(mcar.carrergarCarrosDisponiveis())
 
                 elif opcao3 == 4:
                     apresentacao.listar(mcar.carro3OuMaisAnosOu60kkm(mcar.carregar()))
 
-                elif opcao3 == 5:
+                elif opcao3 == 5:  # listar carros por categoria
                     categoria = input("Qual categoria deseja buscar? opções: Economico, Intermediario, Conforto, Pickup")
                     apresentacao.listar(mcar.buscaCarroPorCategoria(mcar.carregar(), categoria))
 

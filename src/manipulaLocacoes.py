@@ -1,3 +1,10 @@
+import manipulaCSV as mcsv
+import manipulaCarros as mcar
+import manipulaClientes as mcli
+import datetime
+import math
+
+
 def carregar() -> list:
     '''
         Carrega o arquivo de Locacao.csv numa lista

@@ -60,7 +60,7 @@ def excluir(listaCarros : list, placa : str ) -> bool:
         if carro['Placa'] ==  placa :
             flag = True
             listaCarros.pop(i)
-    #print(listaClientes)
+
     if flag:
         mcsv.gravarDados("Carro.csv", camposCarro, listaCarros)
     return flag
@@ -147,7 +147,7 @@ def buscaCarroPorId(listaCarros: list, identificacao: int) -> dict:
     Retorna o carro se encontrado, None caso contrário
     '''
     for carro in listaCarros:
-        if carro['Identificacao'] == identificacao:
+        if carro["Identificacao"] == identificacao:
             return carro
     return None
 

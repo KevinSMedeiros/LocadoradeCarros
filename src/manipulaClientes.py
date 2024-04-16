@@ -12,7 +12,7 @@ def carregar() ->list:
     Retorna uma lista vazia caso o arquivo não exista ou 
     uma lista de dicionários contendo os dados dos clientes
     '''
-    lista = mcsv.carregarDados("LocadoradeCarros/Cliente.csv")
+    lista = mcsv.carregarDados("Cliente.csv")
     return lista
     
 
@@ -31,7 +31,7 @@ def cadastrar( listaClientes : list ) -> bool :
     cliente = apresentacao.CadastrarCliente()
     if not any(c['CPF'] == cliente['CPF'] for c in listaClientes): 
         listaClientes.append(cliente)
-        return mcsv.gravarDados('LocadoradeCarros/Cliente.csv', cliente.keys(), listaClientes )
+        return mcsv.gravarDados('Cliente.csv', cliente.keys(), listaClientes )
 
 def excluir(listaClientes : list, cpf : str ) -> bool:
     '''
@@ -45,7 +45,7 @@ def excluir(listaClientes : list, cpf : str ) -> bool:
             listaClientes.pop(i)
     #print(listaClientes)
     if flag:
-        mcsv.gravarDados("LocadoradeCarros/Cliente.csv", camposCliente, listaClientes)
+        mcsv.gravarDados("Cliente.csv", camposCliente, listaClientes)
     return flag
     
     
@@ -68,7 +68,7 @@ def atualizar(listaClientes : list, cliente : dict) -> bool:
             flag = True
             listaClientes[i] = cliente
     if flag:
-        mcsv.gravarDados("LocadoradeCarros/Cliente.csv", camposCliente, listaClientes)
+        mcsv.gravarDados("Cliente.csv", camposCliente, listaClientes)
     return flag
 def busca1Cliente(listaClientes : list, cpf : str) -> dict:
     '''

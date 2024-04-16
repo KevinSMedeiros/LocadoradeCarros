@@ -160,7 +160,14 @@ def VerificaCpf(cpf: str):
     else:
         dB2 = 11 - resto
 
-    if int(dA1) == int(dB1) and int(dA2) == int(dB2):
+    tudoIgual = True
+
+    for i in range(11):
+        if cpf[0] != cpf[i]:
+            tudoIgual = False
+
+
+    if int(dA1) == int(dB1) and int(dA2) == int(dB2) and not(tudoIgual):
         return True
     else:
         return False

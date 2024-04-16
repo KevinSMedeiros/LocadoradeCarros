@@ -51,8 +51,8 @@ def main():
                     else:
                         print("Cliente não encontrado")
 
-                elif opcao2 == 3:
-                    apresentacao.listar(mcli.carregar())
+                elif opcao2 == 3: # localizar locações do cliente
+                    mcli.locacoesDoCliente()
 
                 elif opcao2 == 4:
                     cpf = input("Qual cpf do cliente que deseja alterar? ")

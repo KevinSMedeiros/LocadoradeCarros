@@ -69,7 +69,7 @@ def MenuClientes() -> int:
     while opcao not in opcoes:
         print("\n")
         print("#"*20)
-        print("1.Cadastrar Cliente\n2.Excluir Cliente\n3.Listar Clientes\n4.Alterar informações\n9.Sair")    
+        print("1.Cadastrar Cliente\n2.Excluir Cliente\n3.Localizar locações finalizadas\n4.Alterar informações\n9.Sair")
         print('#'*20)
         opcao = int(input("Opção -> "))
         print("\n")
@@ -111,9 +111,59 @@ def CadastrarCliente() -> dict:
     l = ["CPF","Nome","Nascimento","Idade","Endereco","Cidade","Estado"]
     cliente = {}
     for campo in l:
-        cliente[campo] = input(f"{campo}:")
+        if campo != "CPF":
+            cliente[campo] = input(f"{campo}:")
+        else:
+            cliente["CPF"] = input("Digite o CPF do cliente (apenas os números): ")
+            while not VerificaCpf(cliente["CPF"]):
+                cliente["CPF"] = input("CPF inválido, digite novamente: ")
     print("\n")
     return cliente
+
+
+def VerificaCpf(cpf: str):
+    '''
+        Procedimento que verifica se o cpf recebido é válido
+
+        Retorno
+        -------
+        Retorna True se o cpf é válido, False se não for válido
+        '''
+    dA1 = cpf[9]
+    dA2 = cpf[10]
+
+    soma = 0
+    j = 10
+
+    for i in range(9):
+        soma = soma + (int(cpf[i]) * j)
+        j = j - 1
+
+    resto = soma % 11
+
+    if resto < 2:
+        dB1 = 0
+    else:
+        dB1 = 11 - resto
+
+    soma = 0
+    j = 11
+
+    for i in range(10):
+        soma = soma + (int(cpf[i]) * j)
+        j = j - 1
+
+    resto = soma % 11
+
+    if resto < 2:
+        dB2 = 0
+    else:
+        dB2 = 11 - resto
+
+    if int(dA1) == int(dB1) and int(dA2) == int(dB2):
+        return True
+    else:
+        return False
 
 
 def CadastrarCarro(identificacao) -> dict:
@@ -180,4 +230,3 @@ def listar(lista : list):
         print("#"*30)
         for campo in i.keys():
             print(campo, ":", i[campo])
-        

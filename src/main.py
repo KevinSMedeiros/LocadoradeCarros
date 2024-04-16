@@ -7,7 +7,7 @@ import apresentacao as apresentacao
 def main():
     opcao = apresentacao.MenuPrincipal()
 
-        while opcao != 9:
+    while opcao != 9:
 
         if opcao == 1:
             opcao1 = apresentacao.MenuLocacao()
